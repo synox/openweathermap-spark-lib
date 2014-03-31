@@ -20,31 +20,30 @@ See the following code, replace the location and the api key.
 
 		
 ```c++
+#include "openweathermap.h"
+#include "HttpClient.h"
 
-		#include "openweathermap.h"
-		#include "HttpClient.h"
-		
-		
-		Weather* weather;
-		HttpClient* httpClient;
-		
-		void setup() {		
-			httpClient = new HttpClient();
-			weather = new Weather("London,UK", httpClient,
-					"INSERT your api key here!");
-			weather->setCelsius();
-			// or weather->setFahrenheit();
-		}
-		
-		void loop() {
-			weather_response_t resp = weather->cachedUpdate();
-			if (resp.isSuccess) {
-				Serial.print(resp.temp_low);
-				Serial.print("-");
-				Serial.print(resp.temp_high);
-				Serial.println(resp.descr);
-			}
-		}
+
+Weather* weather;
+HttpClient* httpClient;
+
+void setup() {		
+	httpClient = new HttpClient();
+	weather = new Weather("London,UK", httpClient,
+			"INSERT your api key here!");
+	weather->setCelsius();
+	// or weather->setFahrenheit();
+}
+
+void loop() {
+	weather_response_t resp = weather->cachedUpdate();
+	if (resp.isSuccess) {
+		Serial.print(resp.temp_low);
+		Serial.print("-");
+		Serial.print(resp.temp_high);
+		Serial.println(resp.descr);
+	}
+}
 ```
 
 
