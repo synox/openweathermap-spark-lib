@@ -22,7 +22,7 @@ void loop() {
 		return;
 	}
 	// print weather
-	weather_response_t resp = weather->update();
+	weather_response_t resp = weather->cachedUpdate();
 	if (resp.isSuccess) {
 		Serial.print(resp.temp_low);
 		Serial.print("-");

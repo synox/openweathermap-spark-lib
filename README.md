@@ -9,10 +9,11 @@ It's free, you just have to sign up for an api-key at: http://openweathermap.org
 
 ## Installation
 * You have to download the ``HttpClient.cpp``/``HttpClient.hs`` files from [HttpClient library](https://github.com/nmattisson/HttpClient) to your project. 
-* Download the files ``.cpp``/``.h`` files from this project page. If you are building locally change the file ``build.mk`` as well. 
+* As well download the library https://github.com/bblanchon/ArduinoJsonParser with the ``.cpp`` and ``.h`` files, also the files in the ``utility`` directory.
+* Download the files ``.cpp``/``.h`` files from this project page. 
 
 
-If you are building locally, change the file ``build.mk`` as well. 
+If you are building locally, change the file ``build.mk`` and add the ``.cpp`` files. 
 
 
 ## Usage
@@ -67,8 +68,8 @@ Sure! Look at the data: http://api.openweathermap.org/data/2.5/forecast/daily?q=
 then change the method ``Weather::parse``, make sure the search keyword is unique. 
 
 
-## Future Ideas
--use a json parser: https://github.com/bblanchon/ArduinoJsonParser
+## How can I help? (TODO)
+-test in Spark web ide
 
 
 

@@ -9,7 +9,7 @@
 
 #include "application.h"
 #include "HttpClient.h"
-
+#include <JsonParser.h>
 
 typedef struct weather_response_t {
 	int temp_high;
@@ -32,6 +32,9 @@ public:
 	weather_response_t cachedUpdate();
 
 private:
+	JsonParser<70> parser; // occupies 70 * 4 bytes
+
+
 	http_request_t request;
 	String location;
 	String apiKey;
@@ -49,7 +52,6 @@ private:
 	unsigned long weather_sync_interval;
 	unsigned long lastsync;
 	weather_response_t lastReponse;
-
 };
 
 #endif
