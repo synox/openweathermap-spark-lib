@@ -68,8 +68,9 @@ Sure! Look at the data: http://api.openweathermap.org/data/2.5/forecast/daily?q=
 then change the method ``Weather::parse``, make sure the search keyword is unique. 
 
 
-## How can I help? (TODO)
--test in Spark web ide
+## How could I help? (TODO)
+*test in Spark web ide
+*make two distribution files (cpp and h) including everything, to make it easier to include in a project
 
 
 
