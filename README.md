@@ -69,8 +69,8 @@ then change the method ``Weather::parse``, make sure the search keyword is uniqu
 
 
 ## How could I help? (TODO)
-*test in Spark web ide
-*make two distribution files (cpp and h) including everything, to make it easier to include in a project
+* test in Spark web ide
+* make two distribution files (cpp and h) including everything, to make it easier to include in a project
 
 
 
