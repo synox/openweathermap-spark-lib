@@ -65,7 +65,7 @@ Currently the library loads the high and low temperature for today, including a 
 ### Can I extend it to include other data?
 Sure! Look at the data: http://api.openweathermap.org/data/2.5/forecast/daily?q=London&mode=xml&units=metric&cnt=2
 
-then change the method ``Weather::parse``, make sure the search keyword is unique. 
+then change the method ``Weather::parse`` and extend the ``weather_response_t``. 
 
 
 ## How could I help? (TODO)
