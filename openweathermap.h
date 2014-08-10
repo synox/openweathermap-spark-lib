@@ -8,14 +8,14 @@
 #define _SPARKWEATHER
 
 #include "application.h"
+#include "JsonParser.h"
 #include "HttpClient.h"
-#include <JsonParser.h>
 
 typedef struct weather_response_t {
-	int temp_high;
-	int temp_low;
+	long temp_high;
+	long temp_low;
 	String descr;
-	int conditionCode; // see http://openweathermap.org/wiki/API/Weather_Condition_Codes
+	long conditionCode; // see http://openweathermap.org/wiki/API/Weather_Condition_Codes
 	bool isSuccess;
 	// defaults:
 	weather_response_t(): temp_high(255), temp_low(255), conditionCode(-1), isSuccess(false) {};
@@ -24,7 +24,7 @@ typedef struct weather_response_t {
 class Weather {
 public:
 	Weather(String location, HttpClient* client, String apiKey);
-	weather_response_t update();
+	bool update(weather_response_t& response);
 	void setCelsius();
 	void setFahrenheit();
 
@@ -32,7 +32,7 @@ public:
 	weather_response_t cachedUpdate();
 
 private:
-	JsonParser<70> parser; // occupies 70 * 4 bytes
+	ArduinoJson::Parser::JsonParser<70> parser; // occupies 70 * 4 bytes
 
 
 	http_request_t request;
@@ -40,13 +40,7 @@ private:
 	String apiKey;
 	String unitsForTemperature;
 	HttpClient* client;
-	weather_response_t response;
-	weather_response_t parse(String json);
-	String readData(String s, String needle, String endMark);
-	int readIntField(const char* fieldname, String jsonData);
-	String readTextField(const char* fieldname, String jsonData);
-
-	long parseInt(String s);
+	bool parse(String& json, weather_response_t& response);
 
 	// cache:
 	unsigned long weather_sync_interval;

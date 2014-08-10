@@ -9,9 +9,8 @@ It's free, you just have to sign up for an api-key at: http://openweathermap.org
 
 ## Installation
 * You have to download the ``HttpClient.cpp``/``HttpClient.h`` files from [HttpClient library](https://github.com/nmattisson/HttpClient) to your project. 
-* As well download the library https://github.com/bblanchon/ArduinoJsonParser with the ``.cpp`` and ``.h`` files. Put the files in the ``utility`` directory also in a the ``utility`` directory in your project. 
+* As well download the Parser library https://github.com/bblanchon/ArduinoJson with the ``.cpp`` and ``.h`` files.
 * Download the files ``.cpp``/``.h`` files from this project page. 
-
 
 If you are building locally, change the file ``build.mk`` and add the ``.cpp`` files. 
 

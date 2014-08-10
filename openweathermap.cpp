@@ -18,11 +18,11 @@ Weather::Weather(String location, HttpClient* client, String apiKey) {
 
 	// init cache
 	this->lastsync = 0;
-	this->weather_sync_interval = 1000 * 3600 * 2; // milliseconds
+	this->weather_sync_interval = 1000 * 3600 * 8; // milliseconds
 
 }
 
-weather_response_t Weather::update() {
+bool Weather::update(weather_response_t& response) {
 	Serial.print("loading weather with url: ");
 	Serial.println(request.path);
 
@@ -36,14 +36,13 @@ weather_response_t Weather::update() {
 			+ "&APPID=" + apiKey; // see http://openweathermap.org/appid
 	request.body = "";
 
-	http_response_t response;
-	this->client->get(request, response);
-	if (response.status == 200) {
-		return parse(response.body);
+	http_response_t http_response;
+	this->client->get(request, http_response);
+	if (http_response.status == 200) {
+		return parse(http_response.body, response);
 	} else {
 		Serial.print("weather request failed ");
-		weather_response_t responseFailed;
-		return responseFailed;
+		return false;
 	}
 }
 
@@ -51,7 +50,7 @@ weather_response_t Weather::update() {
 /**
  *
  */
-weather_response_t Weather::parse(String data) {
+bool Weather::parse(String& data, weather_response_t& response) {
 	/*
 	 * example:
 	 * http://api.openweathermap.org/data/2.5/forecast/daily?q=London,uk&units=metric&cnt=1
@@ -66,29 +65,30 @@ weather_response_t Weather::parse(String data) {
 	 * "weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04d"}],
 	 * "speed":3.7,"deg":162,"clouds":64}]}
 	 */
-	weather_response_t response;
-	unsigned char buffer[600];
+
+	using namespace ArduinoJson::Parser;
+
+
+	unsigned char buffer[data.length()];
 	data.getBytes(buffer, sizeof(buffer), 0);
-	JsonHashTable root = parser.parseHashTable((char*) buffer);
+	JsonObject root = parser.parse((char*) buffer);
 	if (!root.success()) {
-		Serial.println(
-				"Parsing fail: could be an invalid JSON, or too many tokens");
-		return response;
+		Serial.println("Parsing fail: could be an invalid JSON, or too many tokens");
+		return false;
 	}
 
-	JsonArray daysList = root.getArray("list");
-	JsonHashTable today = daysList.getHashTable(0);
-	JsonHashTable temp = today.getHashTable("temp");
-	response.temp_low = temp.getLong("min");
-	response.temp_high = temp.getLong("max");
+	JsonValue daysList = root["list"];
+	JsonValue today = daysList[0];
 
-	JsonHashTable weather = today.getArray("weather").getHashTable(0);
-	response.descr = weather.getString("description");
-	response.conditionCode = weather.getLong("id");
+	response.temp_low = today["temp"]["min"];
+	response.temp_high = today["temp"]["max"];
 
-	// a value over 250 degree/fahrenheit makes no sense
+	JsonValue weather = today["weather"][0];
+	response.descr = weather["description"];
+	response.conditionCode = weather["id"];
+		
 	response.isSuccess = true;
-	return response;
+	return true;
 }
 
 /**
@@ -96,8 +96,9 @@ weather_response_t Weather::parse(String data) {
  */
 weather_response_t Weather::cachedUpdate() {
 	if (lastsync == 0 || (lastsync + weather_sync_interval) < millis()) {
-		lastReponse = this->update();
-		if (lastReponse.isSuccess) {
+		weather_response_t resp;
+		if(this->update(resp)){
+			lastReponse = resp;	
 			lastsync = millis();
 		}
 	} else {
