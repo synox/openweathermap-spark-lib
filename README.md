@@ -1,6 +1,10 @@
 Weather Library for Spark-Core
 =============
 
+
+*You should rather use the web-hook used in the project https://github.com/pkourany/RGBPongClock rather than this library. There it is much easier. There you just need to strip of the stuff you don't need. Good luck.* 
+
+
 This is a simple library to load weather information from openweathermap.com, made for spark core (http://spark.io) (Arduino compatible).
 
 It's free, you just have to sign up for an api-key at: http://openweathermap.org/appid
